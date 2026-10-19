@@ -1,0 +1,280 @@
+@import "tailwindcss";
+
+/*
+ * Sofia Pro / Sofia Sans font setup
+ */
+@font-face {
+  font-family: 'Sofia Pro';
+  src: local('Sofia Pro Bold'), local('SofiaPro-Bold'), local('Sofia Pro Medium'), local('SofiaPro-Medium'), local('Sofia Pro'), local('SofiaPro-Regular');
+  font-weight: 300 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-lobster: 'Lobster', cursive;
+  --font-display: 'Lobster', cursive;
+  --font-sans: 'Sofia Pro', 'Sofia Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-body: 'Sofia Pro', 'Sofia Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-sofia: 'Sofia Pro', 'Sofia Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'Space Mono', monospace;
+  --font-handwriting: 'Caveat', 'Kalam', cursive;
+
+  /* Light Pastel Pop-Art Scrapbook Palette */
+  --color-blush: #FFE4EC;
+  --color-pastel-pink: #FFC4D6;
+  --color-cherry: #E84A65;
+  --color-butter: #FFF0A8;
+  --color-sky: #BDE7FF;
+  --color-ivory: #FFFDF9;
+  --color-cream: #FFF9EF;
+  --color-burgundy: #702632;
+  --color-ink: #252321;
+  --color-charcoal: #625A53;
+  --color-paper: #EAE0D0;
+  --color-border: #E8DCC9;
+}
+
+@layer base {
+  :root {
+    --color-blush: #FFE4EC;
+    --color-pastel-pink: #FFC4D6;
+    --color-cherry: #E84A65;
+    --color-butter: #FFF0A8;
+    --color-sky: #BDE7FF;
+    --color-ivory: #FFFDF9;
+    --color-cream: #FFF9EF;
+    --color-burgundy: #702632;
+    --color-ink: #252321;
+    --color-charcoal: #625A53;
+    --color-paper: #EAE0D0;
+    --color-border: #E8DCC9;
+
+    --font-lobster: 'Lobster', cursive;
+    --font-display: 'Lobster', cursive;
+    --font-body: 'Sofia Pro', 'Sofia Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: 'Space Mono', monospace;
+    --font-handwriting: 'Caveat', 'Kalam', cursive;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background-color: #FFE4EC;
+    color: #252321;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Display headlines using Lobster / characterful display */
+  .font-lobster {
+    font-family: var(--font-lobster);
+    letter-spacing: normal;
+  }
+
+  .font-display {
+    font-family: var(--font-display);
+    letter-spacing: normal;
+  }
+
+  .font-handwriting {
+    font-family: var(--font-handwriting);
+  }
+
+  p, li, input, textarea, select, button, a {
+    font-family: var(--font-body);
+  }
+
+  code, pre, .font-mono {
+    font-family: var(--font-mono);
+  }
+}
+
+/* ============================================================================
+   CHERRY BUTTER STUDIO: TEXTURES & SURFACES
+   ============================================================================ */
+
+/* Sketchbook Grid: Warm Buttery Cream Paper (#FFF5E8) + Soft Pink Gridlines (#EBD6D9) */
+.paper-sketchbook {
+  background-color: #FFF5E8;
+  background-image: 
+    linear-gradient(to right, rgba(235, 214, 217, 0.42) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(235, 214, 217, 0.42) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Blush-Tinted Sketchbook Page for Visual Rhythm */
+.paper-sketchbook-blush {
+  background-color: #FAF0F3;
+  background-image: 
+    linear-gradient(to right, rgba(235, 214, 217, 0.5) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(235, 214, 217, 0.5) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Subtle Warm Notebook Dotted Canvas */
+.paper-dots {
+  background-color: #FFF5E8;
+  background-image: radial-gradient(#E0D0C5 1.2px, transparent 1.2px);
+  background-size: 24px 24px;
+}
+
+/* Clean Crisp Pop Surfaces */
+.paper-grain {
+  position: relative;
+}
+
+/* Light Paper Note Shadow */
+.paper-note-shadow {
+  box-shadow: 
+    0 1px 3px rgba(37, 35, 33, 0.05),
+    0 6px 18px -3px rgba(37, 35, 33, 0.08),
+    0 16px 32px -6px rgba(112, 38, 50, 0.06);
+}
+
+.polaroid-paper-shadow {
+  box-shadow: 
+    0 2px 5px rgba(37, 35, 33, 0.06),
+    0 12px 28px -4px rgba(112, 38, 50, 0.12);
+}
+
+/* Torn Washi Tape Accents */
+.washi-torn-h {
+  clip-path: polygon(
+    0% 0%, 97% 1%, 100% 12%, 96% 24%, 100% 36%, 96% 48%, 100% 60%, 96% 72%, 100% 84%, 97% 96%, 100% 100%,
+    3% 99%, 0% 88%, 4% 76%, 0% 64%, 4% 52%, 0% 40%, 4% 28%, 0% 16%, 3% 4%
+  );
+}
+
+.washi-torn-v {
+  clip-path: polygon(
+    1% 0%, 12% 4%, 24% 0%, 36% 4%, 48% 0%, 60% 4%, 72% 0%, 84% 4%, 96% 0%, 100% 3%,
+    99% 97%, 88% 100%, 76% 96%, 64% 100%, 52% 96%, 40% 100%, 28% 96%, 16% 100%, 4% 97%, 0% 100%
+  );
+}
+
+/* ============================================================================
+   SELECTIVE REFINED GLASSMORPHISM (Used selectively for certificates & subtle depth)
+   ============================================================================ */
+.glass-refined {
+  background: rgba(255, 249, 239, 0.82);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  border: 1px solid rgba(246, 231, 168, 0.75);
+  box-shadow: 
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.8),
+    0 8px 30px -4px rgba(112, 38, 50, 0.08),
+    0 2px 8px -1px rgba(37, 35, 33, 0.04);
+}
+
+.glass-refined-butter {
+  background: rgba(246, 231, 168, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(181, 45, 58, 0.25);
+  box-shadow: 
+    inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.7),
+    0 8px 24px -4px rgba(181, 45, 58, 0.1);
+}
+
+/* Clean, Solid Studio Surface for Project Cards & Content */
+.studio-card {
+  background: #FFFDF9;
+  border: 1.5px solid #E8DCC9;
+  box-shadow: 
+    0 4px 16px -2px rgba(37, 35, 33, 0.06),
+    0 12px 32px -4px rgba(112, 38, 50, 0.05);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.studio-card:hover {
+  border-color: #B52D3A;
+  box-shadow: 
+    0 8px 24px -2px rgba(181, 45, 58, 0.12),
+    0 16px 40px -4px rgba(37, 35, 33, 0.08);
+  transform: translateY(-2px);
+}
+
+/* Cherry Red Primary Button */
+.cherry-btn {
+  background-color: #B52D3A;
+  color: #FFF9EF;
+  border: 1px solid rgba(112, 38, 50, 0.4);
+  box-shadow: 
+    0 2px 6px rgba(181, 45, 58, 0.2),
+    0 8px 20px -3px rgba(181, 45, 58, 0.3);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: var(--font-body);
+}
+
+.cherry-btn:hover {
+  background-color: #9C222E;
+  box-shadow: 
+    0 4px 10px rgba(181, 45, 58, 0.25),
+    0 12px 24px -2px rgba(181, 45, 58, 0.35);
+  transform: translateY(-1px);
+}
+
+.cherry-btn:active {
+  transform: translateY(0);
+  background-color: #821B25;
+}
+
+/* Butter Yellow Accent Button */
+.butter-btn {
+  background-color: #F6E7A8;
+  color: #252321;
+  border: 1.5px solid #E4C868;
+  box-shadow: 0 2px 8px rgba(98, 90, 83, 0.08);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.butter-btn:hover {
+  background-color: #EED888;
+  border-color: #B52D3A;
+  transform: translateY(-1px);
+}
+
+/* Custom Scrollbar in Warm Ivory & Cherry */
+::-webkit-scrollbar {
+  width: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FFF9EF;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #E4D5BE;
+  border-radius: 6px;
+  border: 2px solid #FFF9EF;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #B52D3A;
+}
+
+/* ============================================================================
+   CLEAN PRINT / SAVE AS PDF STYLES FOR RESUME DOSSIER
+   ============================================================================ */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #111827 !important;
+  }
+  header, footer, nav, #hero, #work, #skills, #certificates, #milestones, #about, #contact {
+    display: none !important;
+  }
+  #resume-printable-area {
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+}
