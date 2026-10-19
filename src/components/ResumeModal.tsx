@@ -35,6 +35,8 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
   const [copied, setCopied] = useState(false);
   const [activeTab, setActiveTab] = useState<'dossier' | 'plain'>('dossier');
   const [showPdfNotice, setShowPdfNotice] = useState(false);
+  const [isSavingPdf, setIsSavingPdf] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
 
   // Lock body scroll when modal is open and handle Escape key
@@ -130,13 +132,69 @@ ${RESUME_DATA.startupExperience?.outcomes.map((o) => `- ${o}`).join('\n')}`;
     }
   };
 
-  const handleSaveAsPdf = () => {
-    window.print();
+  const downloadPdfFile = async () => {
+    const pdfPath = RESUME_DATA.cvConfig.pdfPath || '/Sneha-Maurya-CV.pdf';
+    const fileName = RESUME_DATA.cvConfig.fileName || 'Sneha-Maurya-CV.pdf';
+
+    try {
+      // Fetch as blob to guarantee file download in modern browsers
+      const response = await fetch(pdfPath);
+      if (!response.ok) throw new Error('Fetch failed');
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(() => window.URL.revokeObjectURL(blobUrl), 2000);
+      return true;
+    } catch {
+      // Fallback: direct anchor trigger
+      const link = document.createElement('a');
+      link.href = pdfPath;
+      link.download = fileName;
+      link.target = '_blank';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      return true;
+    }
+  };
+
+  const handleSaveAsPdf = async () => {
+    setIsSavingPdf(true);
+    await downloadPdfFile();
+    setSaveSuccess(true);
+
+    // Also attempt window.print() after download initiation for users wanting the print/PDF dialog
+    setTimeout(() => {
+      try {
+        window.print();
+      } catch (printErr) {
+        console.warn('Print preview not supported in this frame:', printErr);
+      }
+      setIsSavingPdf(false);
+    }, 400);
+
+    setTimeout(() => {
+      setSaveSuccess(false);
+    }, 3500);
+  };
+
+  const handlePrintOnly = () => {
+    try {
+      window.print();
+    } catch (err) {
+      console.warn('Direct print failed, saving PDF instead:', err);
+      handleSaveAsPdf();
+    }
   };
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-[#252321]/65 backdrop-blur-xs overflow-y-auto"
+      className="resume-modal-overlay fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-[#252321]/65 backdrop-blur-xs overflow-y-auto print:static print:inset-auto print:p-0 print:m-0 print:bg-white print:overflow-visible print:block print:w-full print:h-auto print:z-auto print:backdrop-filter-none"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -149,12 +207,12 @@ ${RESUME_DATA.startupExperience?.outcomes.map((o) => `- ${o}`).join('\n')}`;
         exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.95, y: 16 }}
         transition={{ duration: 0.22, ease: 'easeOut' }}
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-5xl bg-[#FFFDF9] rounded-[28px] sm:rounded-3xl border-3 border-[#E8DCC9] shadow-2xl flex flex-col max-h-[92vh] overflow-hidden text-[#252321] paper-sketchbook my-auto"
+        className="resume-modal-card relative w-full max-w-5xl bg-[#FFFDF9] rounded-[28px] sm:rounded-3xl border-3 border-[#E8DCC9] shadow-2xl flex flex-col max-h-[92vh] overflow-hidden text-[#252321] paper-sketchbook my-auto print:static print:max-h-none print:w-full print:max-w-none print:border-none print:shadow-none print:rounded-none print:overflow-visible print:bg-white print:m-0 print:p-0 print:block"
       >
         {/* =====================================================================
             1. HEADER / FOLDER TAB (Dossier Jacket)
            ===================================================================== */}
-        <div className="bg-[#FFF9EF] border-b-2 border-[#E8DCC9] px-5 sm:px-8 py-4 flex flex-wrap items-center justify-between gap-4 sticky top-0 z-30 shadow-xs">
+        <div className="bg-[#FFF9EF] border-b-2 border-[#E8DCC9] px-5 sm:px-8 py-4 flex flex-wrap items-center justify-between gap-4 sticky top-0 z-30 shadow-xs print:hidden">
           
           {/* Left Folder Tab Branding */}
           <div className="flex items-center gap-3">
@@ -201,14 +259,43 @@ ${RESUME_DATA.startupExperience?.outcomes.map((o) => `- ${o}`).join('\n')}`;
               </button>
             </div>
 
-            {/* Save as PDF / Print button */}
+            {/* Save as PDF button */}
             <button
               onClick={handleSaveAsPdf}
-              title="Save as PDF or print this resume"
-              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-[#F6E7A8]/50 text-[#702632] font-mono text-xs font-bold border border-[#E8DCC9] transition-colors cursor-pointer shadow-2xs"
+              title="Save official CV as PDF file"
+              disabled={isSavingPdf}
+              className={`hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-mono text-xs font-bold border transition-all cursor-pointer shadow-2xs ${
+                saveSuccess
+                  ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                  : 'bg-white hover:bg-[#F6E7A8]/50 text-[#702632] border-[#E8DCC9]'
+              }`}
+            >
+              {isSavingPdf ? (
+                <>
+                  <Download className="w-3.5 h-3.5 text-[#B52D3A] animate-bounce" />
+                  <span>Saving...</span>
+                </>
+              ) : saveSuccess ? (
+                <>
+                  <Check className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>PDF Saved!</span>
+                </>
+              ) : (
+                <>
+                  <Download className="w-3.5 h-3.5 text-[#B52D3A]" />
+                  <span>Save as PDF</span>
+                </>
+              )}
+            </button>
+
+            {/* Print button */}
+            <button
+              onClick={handlePrintOnly}
+              title="Print this resume document"
+              className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-[#F6E7A8]/50 text-[#702632] font-mono text-xs font-bold border border-[#E8DCC9] transition-colors cursor-pointer shadow-2xs"
             >
               <Printer className="w-3.5 h-3.5 text-[#B52D3A]" />
-              <span>Save as PDF</span>
+              <span>Print</span>
             </button>
 
             {/* Quick Copy Plain Text */}
@@ -240,7 +327,7 @@ ${RESUME_DATA.startupExperience?.outcomes.map((o) => `- ${o}`).join('\n')}`;
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="bg-[#FFF9DA] border-b border-[#E4C868] px-6 py-2.5 flex items-center justify-between gap-3 text-xs font-sans text-[#702632] overflow-hidden"
+              className="bg-[#FFF9DA] border-b border-[#E4C868] px-6 py-2.5 flex items-center justify-between gap-3 text-xs font-sans text-[#702632] overflow-hidden print:hidden"
             >
               <div className="flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 text-[#B52D3A] shrink-0" />
@@ -261,7 +348,7 @@ ${RESUME_DATA.startupExperience?.outcomes.map((o) => `- ${o}`).join('\n')}`;
            ===================================================================== */}
         <div
           id="resume-printable-area"
-          className="p-5 sm:p-8 lg:p-10 overflow-y-auto space-y-8 flex-1 print:p-0 print:overflow-visible print:bg-white print:text-black"
+          className="p-5 sm:p-8 lg:p-10 overflow-y-auto space-y-8 flex-1 print:p-0 print:m-0 print:overflow-visible print:bg-white print:text-black print:max-h-none print:block print:static"
         >
           {activeTab === 'dossier' ? (
             <>
@@ -621,7 +708,7 @@ STARTUP EXPERIENCE
         {/* =====================================================================
             3. FOOTER ACTION BAR
            ===================================================================== */}
-        <div className="px-5 sm:px-8 py-4 border-t-2 border-[#E8DCC9] bg-[#FFF9EF] flex flex-wrap items-center justify-between gap-4 sticky bottom-0 z-30">
+        <div className="px-5 sm:px-8 py-4 border-t-2 border-[#E8DCC9] bg-[#FFF9EF] flex flex-wrap items-center justify-between gap-4 sticky bottom-0 z-30 print:hidden">
           
           {/* Status Note on Left */}
           <div className="flex items-center gap-2 font-mono text-xs text-[#625A53]">
@@ -681,10 +768,29 @@ STARTUP EXPERIENCE
             <button
               onClick={handleSaveAsPdf}
               title="Save this resume directly as a clean PDF or print"
-              className="px-4 py-2 rounded-xl bg-white hover:bg-[#F6E7A8] text-[#702632] hover:text-[#B52D3A] font-mono text-xs font-bold border border-[#E8DCC9] hover:border-[#B52D3A] transition-all cursor-pointer shadow-2xs inline-flex items-center gap-1.5"
+              disabled={isSavingPdf}
+              className={`px-4 py-2 rounded-xl font-mono text-xs font-bold border transition-all cursor-pointer shadow-2xs inline-flex items-center gap-1.5 ${
+                saveSuccess
+                  ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                  : 'bg-white hover:bg-[#F6E7A8] text-[#702632] hover:text-[#B52D3A] border-[#E8DCC9] hover:border-[#B52D3A]'
+              }`}
             >
-              <Printer className="w-3.5 h-3.5 text-[#B52D3A]" />
-              <span>Save as PDF / Print</span>
+              {isSavingPdf ? (
+                <>
+                  <Download className="w-3.5 h-3.5 text-[#B52D3A] animate-bounce" />
+                  <span>Saving PDF...</span>
+                </>
+              ) : saveSuccess ? (
+                <>
+                  <Check className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>PDF Saved!</span>
+                </>
+              ) : (
+                <>
+                  <Printer className="w-3.5 h-3.5 text-[#B52D3A]" />
+                  <span>Save as PDF / Print</span>
+                </>
+              )}
             </button>
 
             {/* Close Button */}
