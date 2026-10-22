@@ -41,10 +41,11 @@ export interface ResumeData {
   githubUrl: string;
   summary: string;
   cvConfig: {
-    // When Sneha's official CV PDF is placed in /public/Sneha-Maurya-CV.pdf, set hasUploadedPdf to true.
     hasUploadedPdf: boolean;
     pdfPath: string;
     fileName: string;
+    atsPdfPath: string;
+    atsFileName: string;
     pendingMessage: string;
   };
   education: EducationResumeItem[];
@@ -75,8 +76,10 @@ export const RESUME_DATA: ResumeData = {
     hasUploadedPdf: true,
     pdfPath: '/Sneha-Maurya-CV.pdf',
     fileName: 'Sneha-Maurya-CV.pdf',
+    atsPdfPath: '/Sneha-Maurya-ATS-Resume.pdf',
+    atsFileName: 'Sneha-Maurya-ATS-Resume.pdf',
     pendingMessage:
-      'Official CV PDF document is ready for instant download!',
+      'Official CV and ATS Resume PDF documents are ready for instant download!',
   },
 
   education: [
@@ -240,15 +243,23 @@ export const RESUME_DATA: ResumeData = {
       year: '2026',
       badge: '1ST RUNNER-UP',
       description:
-        'Awarded 1st Runner-Up in the AI Prompt & Image Generation Challenge addressing the theme "Nature 2027 / Future of Nature 50 Years From Now" through multimodal prompt structuring.',
+        'Awarded 1st Runner-Up in the national AI Prompt & Image Generation Challenge organized by NexaForge in partnership with Unstop, recognized for multimodal prompt precision and creative vision.',
     },
     {
-      title: 'Top 5 Finalist — WebRush 6-Hour Frontend Hackathon',
-      organization: 'WebRush Developer Buildathon',
-      year: '2024',
-      badge: 'TOP 5 FINALIST',
+      title: 'Top 10 Finalist (6th Place, Score: 96.0/100) — Prompt Run 2026',
+      organization: 'Frontend Arena × Unstop',
+      year: '2026',
+      badge: 'TOP 10 FINALIST (96/100)',
       description:
-        'Recognized for solo rapid build and live deployment of "Your Life, In Receipts" under strict 6-hour time constraints among 140+ builder teams.',
+        'Recognized for engineering excellence and design craftsmanship, placing 6th overall with a 96.0/100 score in competitive frontend hackathon.',
+    },
+    {
+      title: 'Rank #28 — WebRush 2026 6-Hour Frontend Hackathon',
+      organization: 'Frontend Arena × Unstop',
+      year: '2026',
+      badge: 'RANK #28',
+      description:
+        'Secured Rank #28 in 6-hour frontend hackathon for solo rapid build and live deployment of "Your Life, In Receipts".',
     },
     {
       title: 'National Space Tech Participant — Bharatiya Antariksh Hackathon',

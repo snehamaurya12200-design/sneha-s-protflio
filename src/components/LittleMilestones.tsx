@@ -380,13 +380,14 @@ export const LittleMilestones: React.FC = () => {
       title: 'The Hackathon Chapter',
       period: 'Competitive Sprints',
       tag: 'AWARDS & HONORS',
-      summary: 'Top 5 Finalist at WebRush 6-Hour Solo Hackathon & 1st Runner-Up at NexaForge × Unstop AI Challenge.',
+      summary: '1st Runner-Up at NexaForge × Unstop AI Challenge & Top 10 Finalist (6th Place, 96/100) at Prompt Run 2026.',
       narrative:
-        'Thrived under high-pressure buildathons. Awarded Top 5 Finalist at WebRush Developer Hackathon after coding and deploying "Your Life, In Receipts" solo within 6 hours. Clinched 1st Runner-Up at NexaForge × Unstop AI Prompt & Image Generation Challenge.',
+        'Thrived under competitive hackathons. Awarded 1st Runner-Up at NexaForge × Unstop AI Prompt & Image Generation Challenge. Clinched Top 10 Finalist (6th Place | Score: 96.0/100) at Prompt Run 2026 and secured Rank #28 in WebRush 6-Hour Solo Buildathon.',
       takeaway: 'Proven capability to formulate problem statements, craft polished UI, and ship working code under tight countdown timers.',
       verifiedDeliverables: [
-        'Top 5 Finalist: WebRush 6-Hour Solo Buildathon',
-        '1st Runner-Up: NexaForge × Unstop AI Prompt Challenge',
+        '1st Runner-Up: NexaForge × Unstop AI Prompt Challenge 2026',
+        'Top 10 Finalist (6th Place, Score 96/100): Prompt Run 2026',
+        'Rank #28: WebRush 6-Hour Solo Frontend Buildathon',
         'National Space Tech Participant: ISRO Hackathon',
       ],
       link: {

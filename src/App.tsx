@@ -3,7 +3,7 @@ import { Navigation } from './components/Navigation.tsx';
 import { Hero } from './components/Hero.tsx';
 import { Marquee } from './components/Marquee.tsx';
 import { Projects, ProjectDetail } from './components/Projects.tsx';
-import { ProjectDetailView } from './components/ProjectDetailView.tsx';
+import { ProjectDetailModal } from './components/ProjectDetailModal.tsx';
 import { Arsenal } from './components/Arsenal.tsx';
 import { Certificates } from './components/Certificates.tsx';
 import { LittleMilestones } from './components/LittleMilestones.tsx';
@@ -167,7 +167,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-transparent text-[#252321] selection:bg-[#F6E7A8] selection:text-[#E52B45] relative">
+    <div id="portfolio-app-root" className="min-h-screen bg-transparent text-[#252321] selection:bg-[#F6E7A8] selection:text-[#E52B45] relative">
       
       {/* Refined Custom Cursor in Raspberry Pink #C24366 & Rose Pink glow */}
       <CustomCursor />
@@ -192,50 +192,46 @@ export default function App() {
         onToggleBgMode={handleToggleBgMode}
       />
 
-      {/* Main View: Dedicated Full-Page Project Detail View OR Portfolio Main Feed */}
-      {selectedProject ? (
-        <ProjectDetailView
-          project={selectedProject}
-          onBack={handleBackToProjects}
-          onSelectProject={handleSelectProject}
-        />
-      ) : (
-        <>
-          {/* Hero Section */}
-          <Hero
-            onExploreWork={handleExploreWork}
-            onOpenYap={() => setIsYapOpen(true)}
-            onOpenResume={() => setIsResumeOpen(true)}
-            onOpenPickupLines={() => setIsPickupLinesOpen(true)}
-          />
+      {/* Main Portfolio Feed — Stays rendered in the background */}
+      <Hero
+        onExploreWork={handleExploreWork}
+        onOpenYap={() => setIsYapOpen(true)}
+        onOpenResume={() => setIsResumeOpen(true)}
+        onOpenPickupLines={() => setIsPickupLinesOpen(true)}
+      />
 
-          {/* Marquee Section Divider */}
-          <Marquee />
+      {/* Marquee Section Divider */}
+      <Marquee />
 
-          {/* Art-Directed "IDEAS THAT LEFT THE GROUP CHAT" Section */}
-          <Projects
-            onSelectProject={handleSelectProject}
-          />
+      {/* Art-Directed "IDEAS THAT LEFT THE GROUP CHAT" Section */}
+      <Projects
+        onSelectProject={handleSelectProject}
+      />
 
-          {/* Arsenal / Skills Section with Solid White Tiles */}
-          <Arsenal />
+      {/* Arsenal / Skills Section with Solid White Tiles */}
+      <Arsenal />
 
-          {/* Dedicated Certificates Section */}
-          <Certificates />
+      {/* Dedicated Certificates Section */}
+      <Certificates />
 
-          {/* Little Milestones Section (Experience & Achievements) */}
-          <LittleMilestones />
+      {/* Little Milestones Section (Experience & Achievements) */}
+      <LittleMilestones />
 
-          {/* About / Lore Section */}
-          <About />
+      {/* About / Lore Section */}
+      <About />
 
-          {/* Contact Section with Warped Checkerboard Graphic — PRESERVED BACKGROUND */}
-          <Contact
-            onOpenYap={() => setIsYapOpen(true)}
-            onOpenResume={() => setIsResumeOpen(true)}
-          />
-        </>
-      )}
+      {/* Contact Section with Warped Checkerboard Graphic */}
+      <Contact
+        onOpenYap={() => setIsYapOpen(true)}
+        onOpenResume={() => setIsResumeOpen(true)}
+      />
+
+      {/* Dedicated Project Detail Pop-up Modal */}
+      <ProjectDetailModal
+        project={selectedProject}
+        onClose={handleBackToProjects}
+        onSelectProject={handleSelectProject}
+      />
 
       {/* Footer with Live IST Clock */}
       <Footer />
@@ -246,10 +242,12 @@ export default function App() {
         onClose={() => setIsYapOpen(false)}
       />
 
-      <ResumeModal
-        isOpen={isResumeOpen}
-        onClose={() => setIsResumeOpen(false)}
-      />
+      <div id="resume-modal-portal">
+        <ResumeModal
+          isOpen={isResumeOpen}
+          onClose={() => setIsResumeOpen(false)}
+        />
+      </div>
 
       <AuraModal
         isOpen={isAuraOpen}

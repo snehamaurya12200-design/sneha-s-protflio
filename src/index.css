@@ -256,85 +256,143 @@
 }
 
 /* ============================================================================
-   CLEAN PRINT / SAVE AS PDF STYLES FOR RESUME DOSSIER
+   CLEAN PRINT / SAVE AS PDF STYLES FOR RESUME DOSSIER & ATS RESUME
    ============================================================================ */
 @media print {
   @page {
-    margin: 12mm 15mm 15mm 15mm;
+    margin: 10mm 12mm 12mm 12mm;
     size: A4 portrait;
+  }
+
+  /* Force pure white paper background with zero dark fills */
+  *, *::before, *::after {
+    box-shadow: none !important;
+    text-shadow: none !important;
   }
 
   html, body {
     background: #ffffff !important;
+    background-color: #ffffff !important;
     color: #111827 !important;
     height: auto !important;
     min-height: 100% !important;
     overflow: visible !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 
-  /* Hide main site chrome, headers, footers, background aura canvas, and navigation */
+  /* 1. Isolation: Hide EVERYTHING in the application except the resume portal */
+  #portfolio-app-root > *:not(#resume-modal-portal) {
+    display: none !important;
+  }
+
   header, footer, nav, #hero, #work, #skills, #certificates, #milestones, #about, #contact,
   .print-hidden,
   [data-print-hide="true"] {
     display: none !important;
   }
 
-  /* Unroll the modal container so print engines paginate properly across multiple sheets */
+  /* 2. Unroll the application root and portal containers */
+  #portfolio-app-root {
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+    background: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  #resume-modal-portal {
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* 3. Strip dark modal backdrop overlay and reset to static document flow */
   .resume-modal-overlay {
     position: static !important;
     inset: auto !important;
     width: 100% !important;
     height: auto !important;
+    min-height: 0 !important;
     max-height: none !important;
     padding: 0 !important;
     margin: 0 !important;
-    background: transparent !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
     backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
     overflow: visible !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
     display: block !important;
+    z-index: auto !important;
   }
 
+  /* 4. Strip modal frame borders, animations, and transform clipping */
   .resume-modal-card {
     position: static !important;
+    inset: auto !important;
     width: 100% !important;
     max-width: 100% !important;
     height: auto !important;
+    min-height: 0 !important;
     max-height: none !important;
     margin: 0 !important;
     padding: 0 !important;
     border: none !important;
-    box-shadow: none !important;
     border-radius: 0 !important;
     overflow: visible !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
     background: #ffffff !important;
+    background-color: #ffffff !important;
+    background-image: none !important;
+    transform: none !important;
+    filter: none !important;
     display: block !important;
   }
 
+  /* 5. Printable content area unrolled for seamless pagination across sheets */
   #resume-printable-area {
     position: static !important;
     width: 100% !important;
     max-width: 100% !important;
     height: auto !important;
+    min-height: 0 !important;
     max-height: none !important;
     overflow: visible !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
     padding: 0 !important;
     margin: 0 !important;
     background: #ffffff !important;
+    background-color: #ffffff !important;
     color: #111827 !important;
-    box-shadow: none !important;
-    border: none !important;
     display: block !important;
   }
 
-  /* Prevent page breaks cutting right through individual cards */
-  .resume-item-block {
+  /* 6. Prevent awkward page breaks cutting across individual cards or sections */
+  .resume-item-block,
+  .resume-avoid-break {
     break-inside: avoid !important;
     page-break-inside: avoid !important;
   }
 
-  /* Suppress browser appending URLs after links in print */
+  /* 7. Suppress browser appending raw URLs after links in print */
   a[href]:after {
     content: none !important;
   }

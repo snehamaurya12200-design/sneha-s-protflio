@@ -109,8 +109,8 @@ export const Arsenal: React.FC = () => {
         },
       ],
       relatedHonors: [
-        'WebRush Hackathon Top 5 Finalist (Solo UI & Code Sprint)',
-        'PixelPrompt Creative Craft Award',
+        'Prompt Run 2026 Top 10 Finalist (6th Place, Score: 96/100)',
+        'WebRush Hackathon Rank #28 (Solo UI & Code Sprint)',
       ],
     },
 
